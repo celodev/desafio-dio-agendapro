@@ -9,7 +9,7 @@ O **AgendaPro** é um MVP de agendamento para profissionais autônomos e pequeno
 | Recurso | Endereço |
 |---|---|
 | Aplicação publicada | `ADICIONAR_URL_DA_APLICACAO` |
-| Repositório | `[https://github.com/celodev/dio-agendapro/tree/main]` |
+| Repositório | `https://github.com/celodev/dio-agendapro/tree/main` |
 
 > Antes da entrega, substitua os endereços acima e remova este aviso.
 
