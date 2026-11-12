@@ -8,7 +8,7 @@ O **AgendaPro** é um MVP de agendamento para profissionais autônomos e pequeno
 
 | Recurso | Endereço |
 |---|---|
-| Aplicação publicada | `ADICIONAR_URL_DA_APLICACAO` |
+| Aplicação publicada | `https://pixel-perfect-replay-76778.lovable.app` |
 | Repositório | `[https://github.com/celodev/desafio-dio-agendapro]` |
 
 > Antes da entrega, substitua os endereços acima e remova este aviso.
