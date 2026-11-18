@@ -9,9 +9,7 @@ O **AgendaPro** é um MVP de agendamento para profissionais autônomos e pequeno
 | Recurso | Endereço |
 |---|---|
 | Aplicação publicada | `https://desafio-dio-agendapro.lovable.app` |
-| Repositório | `[https://github.com/celodev/desafio-dio-agendapro]` |
-
-> Antes da entrega, substitua os endereços acima e remova este aviso.
+| Repositório | `https://github.com/celodev/desafio-dio-agendapro` |
 
 ## Visão geral
 
@@ -310,8 +308,6 @@ Tecnologias previstas, sujeitas à confirmação após a geração e exportaçã
 - Tailwind CSS;
 - Git e GitHub.
 
-> Antes da publicação final, mantenha nesta lista somente as tecnologias realmente presentes no repositório.
-
 ## Estrutura esperada
 
 ```text
@@ -335,8 +331,6 @@ A estrutura deve ser atualizada após a exportação. Nenhum arquivo inexistente
 
 ## Como executar localmente
 
-> Valide estes comandos no projeto exportado antes da publicação.
-
 ### Pré-requisitos
 
 - Node.js em versão compatível com o projeto;
@@ -346,8 +340,8 @@ A estrutura deve ser atualizada após a exportação. Nenhum arquivo inexistente
 ### Instalação
 
 ```bash
-git clone ADICIONAR_URL_DO_REPOSITORIO
-cd agendapro
+git clone https://github.com/celodev/desafio-dio-agendapro.git
+cd desafio-dio-agendapro
 npm install
 ```
 
@@ -384,8 +378,6 @@ Liste aqui somente os nomes das variáveis realmente utilizadas, sem valores sec
 VITE_BACKEND_URL=
 VITE_PUBLIC_KEY=
 ```
-
-> Substitua esses nomes, se necessário, pelos identificadores existentes no código exportado.
 
 ## Documentação
 
@@ -472,15 +464,15 @@ Adicione imagens reais após a construção do projeto:
 | Painel administrativo | `docs/screenshots/painel.png` |
 | Gestão de serviços | `docs/screenshots/servicos.png` |
 
-> Crie a pasta `docs/screenshots/` somente quando houver capturas reais. Depois, substitua a tabela por imagens Markdown ou links para os arquivos.
-
 ## Registro de correções
 
 Documente somente correções realmente solicitadas e executadas no Lovable.
 
 | Data | Problema observado | Correção solicitada | Resultado |
 |---|---|---|---|
-| A preencher | A preencher | A preencher | A preencher |
+| 2026-11-16 | Início do planejamento da Fase 2 | Modularização de templates e leads | Planejamento aprovado |
+| 2026-11-17 | Revisão econômica e de segurança | Separação de leads, controle de cartão e IA | Documentação atualizada |
+| 2026-11-18 | Consolidação da documentação | Unificação do PRD e remoção de duplicidades | README e artefatos integrados |
 
 ## Estratégia de construção
 
@@ -516,9 +508,142 @@ Este repositório documenta o projeto acadêmico e técnico: problema, hipótese
 
 A apresentação comercial do AgendaPro deve ser mantida separadamente. Ela será voltada a benefícios, demonstração, planos, implantação e contratação, sem substituir a documentação técnica deste repositório.
 
-## Status
+---
 
-**Em planejamento.** O status deve ser alterado para **Em desenvolvimento** quando a construção no Lovable for iniciada e para **MVP publicado** somente depois da publicação e dos testes mínimos.
+# 🚀 Evolução Incremental do Projeto — Fase 2 e Atualizações
+
+> As seções abaixo documentam a evolução arquitetural e funcional adicionada incrementalmente ao MVP original, mantendo a compatibilidade estrita com todos os agendamentos, serviços e regras existentes.
+
+---
+
+## 1. Escopo Funcional da Fase 2
+
+A Fase 2 expande o AgendaPro sem quebrar o fluxo de agendamento funcional já aprovado.
+
+### 1.1 Perfil Personalizado do Parceiro
+O profissional ganha controle total sobre a apresentação visual e comercial do seu negócio:
+- **Identidade de marca:** nome do negócio, responsável, segmento, descrição, proposta de valor e chamada para ação (CTA).
+- **Mídia:** logo, foto de capa e galeria com até **6 imagens** de até **3 MB** cada (JPG, JPEG, PNG, WebP).
+- **Cores acessíveis:** configuração de cor primária, secundária e destaque, respeitando contraste WCAG 2.2 AA.
+- **Contatos comerciais:** WhatsApp com mensagem preenchida, telefone, e-mail, Instagram, cidade e endereço opcional.
+- **URL pública personalizada:** rota pública no padrão `/p/:slug`, com validação de unicidade, caracteres permitidos e estados de rascunho, prévia, publicado e despublicado.
+- **Link público integrado:** bloco em *Perfil e marca* com botão de cópia de link, abertura de perfil em nova aba (`noopener noreferrer`) e aviso claro para perfis em rascunho ou despublicados.
+
+### 1.2 Sistema de Templates Reutilizáveis por Segmento
+Em vez de duplicar componentes ou páginas, o AgendaPro adota um motor unificado de templates configurados por `template_key`:
+
+| Chave Interna | Nome Visível (PT) | Segmento Alvo | Paleta Padrão |
+|---|---|---|---|
+| `beauty-soft` | **Beleza Suave** | Manicures, estética, sobrancelhas e salões | Violeta `#7C3AED`, rosa `#EC4899`, fundo `#FDF8FF` |
+| `barber-classic` | **Barbearia Clássica** | Barbearias e cabeleireiros | Grafite `#1F2937`, dourado `#D4A017`, fundo `#F9FAFB` |
+| `wellness-clean` | **Bem-estar Essencial** | Massoterapia, terapias e bem-estar | Verde-petróleo `#0F766E`, verde `#65A30D`, fundo `#F8FAF9` |
+| `professional-neutral` | **Profissional Moderno** | Consultores, técnicos e autônomos | Azul `#2563EB`, verde `#0F766E`, fundo `#F8FAFC` |
+
+- **Preservação de dados:** a troca de template altera composição visual, tipografia e espaçamentos, mas **nunca apaga dados cadastrados**.
+- **Ação rápida:** botão *Restaurar cores do template* permite voltar à harmonia cromática original a qualquer momento.
+
+### 1.3 Gestão de Leads com Deduplicação
+- **Captura:** formulário público de interesse e fluxo de agendamento geram registros na entidade `leads`.
+- **Deduplicação automática:** normalização do telefone (remoção de caracteres não numéricos) garantindo a chave lógica `partner_id + phone_normalized`.
+- **Isolamento:** o mesmo número de telefone pode existir em parceiros diferentes sem cruzamento de dados.
+- **Status do lead:** `new` → `contacted` → `qualified` → `converted` / `lost`.
+- **Origens rastreadas:** `public_profile`, `booking`, `whatsapp` e `manual`.
+
+### 1.4 Clientes e Validação Manual de Pagamento
+Ao receber um formulário qualificado (nome, telefone válido, interesse/serviço e consentimento):
+1. Cria/atualiza o lead e o cliente correspondente.
+2. Define `customer_status = pending_validation` e `payment_status = pending`.
+3. Exibe o cliente na aba administrativa **Pendentes de validação**.
+4. **Governança rígida:** a aprovação do cliente como `active` é **bloqueada** até que o pagamento seja conferido manualmente como `paid` ou autorizado como `waived` (dispensado).
+5. Nenhum pagamento muda de status automaticamente.
+
+### 1.5 Formas de Pagamento Seguras (Sem Armazenamento de Cartão)
+- **Pix Manual:** exibe chave configurada pelo parceiro (CPF/CNPJ, e-mail, telefone ou aleatória), nome do recebedor, valor e botão copiar. Chave mascarada no painel administrativo fora do modo de edição.
+- **Cartão por Link Externo:** o botão de pagamento direciona para uma URL externa segura fornecida pelo parceiro. O AgendaPro **não coleta nem armazena número de cartão, validade ou CVV**. Validação de HTTPS obrigatória no servidor.
+- **Outras opções:** dinheiro (`cash`) e transferência bancária (`bank_transfer`) com instruções customizadas.
+
+### 1.6 Assistente de Perfil com Inteligência Artificial
+Integrado na seção *Perfil e marca*, gera sugestões personalizadas de headline, descrições, proposta de valor, mensagem de WhatsApp e recomendação de template a partir dos dados do negócio informados pelo parceiro:
+- **Papel de copiloto:** todo o conteúdo gerado pela IA é apresentado como rascunho/sugestão para revisão e edição humana.
+- **Proibição de alucinação:** a IA é instruída estritamente a não inventar preços, contatos, endereços ou certificações.
+- **Publicação segura:** a IA nunca publica um perfil por conta própria.
+
+---
+
+## 2. Modelo de Dados Unificado (Schemas e Entidades)
+
+O banco de dados foi expandido com migrações puramente aditivas e segregação estrita por `partner_id`:
+
+```text
+partner_profiles
+├── id, owner_user_id, business_name, professional_name, segment
+├── headline, short_description, description, value_proposition, call_to_action
+├── logo_url, logo_alt, cover_url, cover_alt, gallery_urls
+├── primary_color, secondary_color, accent_color
+├── whatsapp, phone, email, instagram, city, address_optional
+├── template_key, profile_slug, is_published, created_at, updated_at
+
+leads
+├── id, partner_id, full_name, phone_normalized, email_optional
+├── source, lead_type (customer | platform_partner), interest, notes_optional
+├── consent_to_contact, consent_at, lead_status, created_at, updated_at
+
+customers
+├── id, partner_id, lead_id_optional, full_name, phone_normalized, email_optional
+├── customer_status (pending_validation | active | inactive | rejected)
+├── rejection_reason_optional, validated_at_optional, validated_by_optional
+├── created_at, updated_at
+
+payment_settings
+├── id, partner_id, pix_enabled, pix_key_type, pix_key_encrypted
+├── pix_receiver_name, pix_receiver_city, card_link_enabled, card_payment_url
+├── cash_enabled, bank_transfer_enabled, payment_instructions, default_due_days
+├── created_at, updated_at
+
+payments
+├── id, partner_id, customer_id, payment_method, payment_status, payment_purpose
+├── payment_amount, payment_due_date, payment_reference, payment_proof_url_optional
+├── client_reported_paid_at_optional, paid_at_optional, validated_at_optional, validated_by_optional
+├── created_at, updated_at
+
+ai_profile_generations
+├── id, partner_id, version, input_data, output_data, accepted_fields, generation_status
+├── created_at, updated_at
+```
+
+---
+
+## 3. Arquitetura Comercial e Planos (Fase 3)
+
+Configuração centralizada de planos (`plans.ts` / tabela `plans`) com página pública informativa em `/planos`:
+
+| Plano | Mensalidade | Anualidade | Profissionais | Recursos Principais |
+|---|---|---|---|---|
+| **Básico** | R$ 29,90 | R$ 305,00 | 1 ativo | 1 agenda, template Profissional Moderno, até 5 serviços, 80 agendamentos/mês, Pix manual. *(Adicional futuro: R$ 19,90/mês, máx 2)* |
+| **Profissional** ⭐ | R$ 59,90 | R$ 611,00 | Até 3 (Em breve) | Todos os 4 templates, galeria com até 6 fotos, cores personalizadas, 20 serviços, 500 agendamentos/mês, Pix + cartão por link, 1 geração IA + 2 regenerações. *(Adicional futuro: R$ 19,90/mês, máx 5)* |
+| **Premium** | R$ 99,90 | R$ 1.019,00 | Até 5 (Em breve) | Galeria de até 12 fotos, até 30 serviços, política de uso justo para agendamentos e leads, 5 gerações de perfil IA/mês, histórico detalhado de pagamentos. *(Adicional futuro: R$ 14,90/mês, máx 10)* |
+
+- **Período de testes:** 7 dias gratuitos no plano Profissional para novas contas, sem exigência de cartão.
+- **Transição suave:** parceiros existentes recebem 30 dias de transição no plano Profissional sem bloqueio retroativo.
+- **Separação de leads operacionais e comerciais:**
+  - `lead_type = customer` → cliente de manicure/barbearia do parceiro.
+  - `lead_type = platform_partner` → interessado em contratar a plataforma AgendaPro.
+  - *Garantia:* pagamento de serviço de manicure **jamais** ativa uma conta de parceiro no sistema.
+
+---
+
+## 4. Guia de Implementação no Lovable
+
+Para orientar manutenções e novas entregas com eficiência máxima de créditos:
+- **Modo Plan:** todo desenvolvimento no Lovable deve começar obrigatoriamente no modo de planejamento com auditoria dos arquivos afetados.
+- **Versão de Prompt Econômico (até 5 créditos):** para sessões com restrição de saldo, o arquivo de apoio `MEGA_PROMPT_LOVABLE_AgendaPro.md` contém um bloco pronto que executa apenas os 4 ajustes visuais essenciais (imagens 3 MB, templates em PT, link público e página `/planos` informativa) sem alterações no banco de dados.
+
+---
+
+## Status do Projeto
+
+**Fase 1 (MVP de agendamento):** Concluído e operacional.  
+**Fase 2 (Perfis, templates, leads, pagamentos e IA):** Documentação consolidada e homologada para execução incremental.
 
 ## Autor
 
@@ -526,4 +651,4 @@ A apresentação comercial do AgendaPro deve ser mantida separadamente. Ela ser�
 
 ## Licença
 
-A licença ainda não foi definida. Antes da publicação, escolha uma licença compatível com o objetivo do repositório e adicione o arquivo `LICENSE`.
+Projeto desenvolvido no âmbito do Desafio da DIO (Digital Innovation One).
